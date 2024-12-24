@@ -1,12 +1,23 @@
 from difflib import SequenceMatcher
 from sys import argv
+from sudachipy import tokenizer
+from sudachipy import dictionary
+
+# トークナイザーの準備
+tokenizer_obj = dictionary.Dictionary().create()
 
 
 def CER_line(line1, line2):
+    # 正規化関数の定義
+    def wakati_normalized(sentence):
+        mode = tokenizer.Tokenizer.SplitMode.C
+        return "".join([m.normalized_form() for m in tokenizer_obj.tokenize(sentence, mode)])
 
-    line1 = line1.replace("、", "").replace(
+    # 正規化関数の実行
+
+    line1 = wakati_normalized(line1).replace("、", "").replace(
         "。", "").replace("！", "").replace("!", "")
-    line2 = line2.replace("、", "").replace(
+    line2 = wakati_normalized(line2).replace("、", "").replace(
         "。", "").replace("！", "").replace("!", "")
     s1 = list(line1)
     s2 = list(line2)
@@ -41,12 +52,11 @@ def CER_line(line1, line2):
             num_replace += i2 - i1
 
     cer = (num_delete + num_replace + num_insert) / num_char
-    if (cer > 0):
-        print(f"原文：{line1}")
-        print(f"予測：{line2}")
-        print("差分：" + " / ".join(diffs))
-        print(f"CER:{cer}")
-    # print(line2 + "\t" + str(cer))
+    print(f"原文：{line1}")
+    print(f"予測：{line2}")
+    print("差分：" + " / ".join(diffs))
+    print(f"CER:{cer}")
+
     return cer
 
 
