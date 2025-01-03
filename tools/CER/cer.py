@@ -5,9 +5,9 @@ from sys import argv
 def CER_line(line1, line2):
 
     line1 = line1.replace("、", "").replace(
-        "。", "").replace("！", "").replace("!", "")
+        "。", "").replace("！", "").replace("!", "").replace("・", "").replace(" ", "")
     line2 = line2.replace("、", "").replace(
-        "。", "").replace("！", "").replace("!", "")
+        "。", "").replace("！", "").replace("!", "").replace("・", "").replace(" ", "")
     s1 = list(line1)
     s2 = list(line2)
 

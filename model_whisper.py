@@ -1,7 +1,6 @@
 import csv
 import argparse
 import whisper
-import torch
 import numpy as np
 
 parser = argparse.ArgumentParser()
@@ -12,12 +11,13 @@ parser.add_argument(
 parser.add_argument('-src', help='動画データへのパス')
 parser.add_argument('-dst', help='csvファイルのパス')
 parser.add_argument('-score', help='scoreファイルへのパス')
+parser.add_argument('-gpu', help='which gpu to use')
 
 args = parser.parse_args()
 
 
 # modelのロード（large-v2を選択する場合）
-model = whisper.load_model(args.model)
+model = whisper.load_model(args.model, device=f'cuda:{args.gpu}')
 # 文字起こし
 result = model.transcribe(args.src, temperature=0)
 # print(seq_logits)
