@@ -1,6 +1,11 @@
 # PBL-Script-Generation
 学部共通PBL 自然言語処理 台本生成チームのリポジトリ
 
+## 概要と機能
+テレビ番組のデータ（動画または音声）を入力し、
+発話内容を自動で文字起こしして台本を作成し、
+Microsoft WordおよびCSV形式で出力する。
+
 ## Usage
 `whisper.py`または`whisper.ipynb`を使用する。
 ### 環境構築
