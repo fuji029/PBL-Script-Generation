@@ -1,3 +1,4 @@
+import pandas as pd
 from docx.shared import Cm
 import docx
 import csv
@@ -40,27 +41,6 @@ if not date_match:
 model = whisper.load_model("large-v2")
 # 文字起こし
 result = model.transcribe(file_name, verbose=True)
-
-
-with open("台本_" + filemeta_name + ".csv", 'w', newline='') as csvfile:
-
-    writer = csv.writer(csvfile)
-
-    writer.writerows([['start_time', 'end_time', 'output']])
-    for segment in result['segments']:
-        ts = int(segment['start'])
-        te = int(segment['end'])
-        start = f"{ts%60}:{ts//60}"
-        end = f"{te%60}:{ts//60}"
-        text = segment['text']
-        writer.writerows([[start, end, text]])
-
-
-# Word文書の新規作成
-doc = docx.Document()
-
-doc.add_heading(filemeta_name[14:])
-doc.add_paragraph(f"{date_match[1]}年{date_match[2]}月{date_match[3]}日放送")
 
 # CSVファイルを読み込み
 with open("台本_" + filemeta_name + ".csv", 'w', newline='') as csvfile:
@@ -113,6 +93,9 @@ set_column_width(table.columns[2], Cm(11.2))
 # Word文書の保存
 doc.save("台本_" + filemeta_name + ".docx")
 
+# csvデータをエクセルに変換
+csvdata = pd.read_csv("台本_" + filemeta_name + ".csv", encoding='utf-8')
+csvdata.to_excel("台本_" + filemeta_name + ".xlsx", index=False)
 
 file_path = file_name  # 削除したいファイルのパス
 if os.path.exists(file_path):
